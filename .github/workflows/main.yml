@@ -20,9 +20,11 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-  test:
+  rspec:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Run RSpec tests
-        run: docker-compose run web bin/rails spec
+      - name: Start containers
+        run: docker-compose -f docker-compose.yml up -d
+      - name: Run RSpec
+        run: docker-compose exec web bin/rails spec
