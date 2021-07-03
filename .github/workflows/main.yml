@@ -22,5 +22,7 @@ jobs:
           file: ./Dockerfile
       - name: Start containers
         run: docker-compose -f docker-compose.yml up -d
+      - name: Prepare database
+        run: docker-compose exec -T web bin/rails db:prepare
       - name: Run RSpec
         run: docker-compose exec -T web bin/rails spec
