@@ -23,4 +23,4 @@ jobs:
       - name: Start containers
         run: docker-compose -f docker-compose.yml up -d
       - name: Run RSpec
-        run: docker-compose exec web bin/rails spec
+        run: docker-compose exec -T web bin/rails spec
