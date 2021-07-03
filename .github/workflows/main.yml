@@ -6,7 +6,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -20,10 +20,6 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-  rspec:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Start containers
         run: docker-compose -f docker-compose.yml up -d
       - name: Run RSpec
