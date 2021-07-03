@@ -25,4 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run RSpec tests
-        run: docker compose run web bin/rails spec
+        run: docker-compose run web bin/rails spec
