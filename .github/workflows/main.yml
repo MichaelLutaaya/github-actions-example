@@ -5,15 +5,25 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+env:
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 jobs:
-  test:
-    env:
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Build
         run: docker-compose build
-      - name: Run tests
+  rspec:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run RSpec tests
         run: docker-compose run web ./wait-for-postgres.sh db bin/rails db:prepare spec
+  rubocop:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rubocop
+        run: docker-compose run web bin/bundle exec rubocop
