@@ -1,3 +1,0 @@
-sut:
-  build: .
-  command: bin/rails db:prepare spec
