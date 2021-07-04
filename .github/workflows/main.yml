@@ -19,11 +19,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: LS
+        run: ls -lah
       - name: Run RSpec tests
         run: docker-compose run web ./wait-for-postgres.sh db bin/rails db:prepare spec
   rubocop:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: LS
+        run: ls -lah
       - name: Rubocop
         run: docker-compose run web bin/bundle exec rubocop
