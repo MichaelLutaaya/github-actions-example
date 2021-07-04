@@ -16,4 +16,4 @@ jobs:
       - name: Build
         run: docker-compose build
       - name: Run tests
-        run: docker-compose run web bin/rails db:prepare spec
+        run: docker-compose run web ./wait-for-postgres.sh db bin/rails db:prepare spec
