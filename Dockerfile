@@ -1,4 +1,4 @@
-FROM ruby:3.0
+FROM ruby:3.0.1
 RUN apt-get update -qq && apt-get install -y libgeos-dev libproj-dev postgresql-client
 RUN mkdir /app
 WORKDIR /app
