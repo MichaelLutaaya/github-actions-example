@@ -1,0 +1,22 @@
+name: RSpec
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0.1
+    - name: Install gems
+      run: |
+        gem install bundler
+        bundle install
+    - name: Run RSpec tests
+      run: bundle exec rails db:prepare spec
