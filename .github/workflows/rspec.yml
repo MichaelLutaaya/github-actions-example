@@ -8,6 +8,7 @@ on:
 env:
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   DATABASE_URL: postgres://postgres@localhost:5432
+  RAILS_ENV: test
 
 jobs:
   rspec:
