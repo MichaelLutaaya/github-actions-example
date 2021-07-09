@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 env:
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432
+  DATABASE_URL: postgres://postgres@localhost:5432
 
 jobs:
   rspec:
