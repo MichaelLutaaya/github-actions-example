@@ -14,8 +14,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.0.1
+    - name: Run setup script
+      run: bin/setup
     - name: Rubocop
-      run: |
-        gem install bundler
-        bundle install
-        bundle exec rubocop
+      run: bundle exec rubocop
