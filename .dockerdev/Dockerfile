@@ -58,6 +58,6 @@ COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 
 ENV RAILS_ENV=production
-RUN bin/bundle config --local deployment true && bin/bundle install
+RUN ./bin/bundle config --local deployment true && ./bin/bundle install
 
 COPY . /app

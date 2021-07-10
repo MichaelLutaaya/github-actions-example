@@ -17,6 +17,6 @@ jobs:
       with:
         ruby-version: 3.0.1
     - name: Run setup script
-      run: bin/setup
+      run: ./bin/setup
     - name: Rubocop
-      run: bin/bundle exec rubocop
+      run: ./bin/bundle exec rubocop
