@@ -16,7 +16,9 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.0.1
-    - name: Run setup script
-      run: ./bin/setup
+    - name: Install gems
+      run: |
+        gem install bundler --conservative
+        bin/bundle install
     - name: Rubocop
-      run: ./bin/bundle exec rubocop
+      run: bin/bundle exec rubocop

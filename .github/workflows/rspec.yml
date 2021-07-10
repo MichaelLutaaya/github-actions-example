@@ -31,6 +31,6 @@ jobs:
       with:
         ruby-version: 3.0.1
     - name: Run setup script
-      run: ./bin/setup
+      run: bin/setup
     - name: Run RSpec tests
-      run: ./bin/bundle exec rails spec
+      run: bin/bundle exec rails spec
