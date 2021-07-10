@@ -2,7 +2,9 @@ version: '3.9'
 
 x-app: &app
   build:
-    context: .dockerdev
+    context: .
+    dockerfile: .dockerdev/Dockerfile
+    target: base
     args:
       BUNDLER_VERSION: "2.2.21"
       DEBIAN_RELEASE: "buster"

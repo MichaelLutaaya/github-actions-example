@@ -1,6 +1,10 @@
+################################################################################
+## Base Image
+################################################################################
+
 ARG RUBY_VERSION
 ARG DEBIAN_RELEASE
-FROM ruby:$RUBY_VERSION-slim-$DEBIAN_RELEASE
+FROM ruby:$RUBY_VERSION-slim-$DEBIAN_RELEASE AS base
 
 ARG BUNDLER_VERSION
 ARG PG_MAJOR
@@ -23,7 +27,7 @@ RUN apt-get update -qq \
 RUN curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
   && echo "deb http://apt.postgresql.org/pub/repos/apt $DEBIAN_RELEASE-pgdg main $PG_MAJOR" > /etc/apt/sources.list.d/pgdg.list
 
-COPY Aptfile /tmp/Aptfile
+COPY .dockerdev/Aptfile /tmp/Aptfile
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -yq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
@@ -43,3 +47,17 @@ RUN gem update --system \
 
 RUN mkdir -p /app
 WORKDIR /app
+
+################################################################################
+## Production Image
+################################################################################
+
+FROM base AS production
+
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
+
+ENV RAILS_ENV=production
+RUN bin/bundle config --local deployment true && bin/bundle install
+
+COPY . /app
