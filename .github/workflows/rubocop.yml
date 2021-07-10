@@ -17,9 +17,5 @@ jobs:
       with:
         ruby-version: 3.0.1
         bundler-cache: true
-    - name: Install gems
-      run: |
-        gem install bundler --conservative
-        bin/bundle install
     - name: Rubocop
       run: bin/bundle exec rubocop
