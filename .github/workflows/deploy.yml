@@ -17,9 +17,8 @@ jobs:
         id: generate_tags
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
-          IMAGE="docker.io/michaellutaaya/github-actions-example"
+          IMAGE="michaellutaaya/github-actions-example"
           echo ::set-output name=tagged_image::${IMAGE}:${TAG}
-          echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Cache Docker layers
@@ -40,7 +39,7 @@ jobs:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
           file: .dockerdev/Dockerfile
-          push: false
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/head/main' }}
           tags: ${{ steps.generate_tags.outputs.tagged_image }}
           target: production
           cache-from: type=local,src=/tmp/.buildx-cache
