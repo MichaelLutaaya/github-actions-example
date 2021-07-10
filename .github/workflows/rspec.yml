@@ -33,4 +33,4 @@ jobs:
     - name: Run setup script
       run: bin/setup
     - name: Run RSpec tests
-      run: bundle exec rails spec
+      run: bin/bundle exec rails spec

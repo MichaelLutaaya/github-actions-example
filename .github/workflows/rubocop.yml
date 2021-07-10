@@ -17,4 +17,4 @@ jobs:
     - name: Run setup script
       run: bin/setup
     - name: Rubocop
-      run: bundle exec rubocop
+      run: bin/bundle exec rubocop
