@@ -1,19 +1,70 @@
 version: '3.9'
+
+x-app: &app
+  build:
+    context: .dockerdev
+    args:
+      BUNDLER_VERSION: "2.2.21"
+      DEBIAN_RELEASE: "buster"
+      PG_MAJOR: "13"
+      RUBY_VERSION: "3.0.1"
+  environment: &env
+    RAILS_ENV: ${RAILS_ENV:-development}
+  image: github-actions-example:1.0.0
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - .:/app:cached
+    - bundle:/usr/local/bundle
+    - rails_cache:/app/tmp/cache
+    - .dockerdev/.psqlrc:/root/.psqlrc:ro
+  environment:
+    <<: *env
+    DATABASE_URL: ${DATABASE_URL:-postgres://postgres@db:5432}
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+  depends_on:
+    db:
+      condition: service_healthy
+
 services:
   db:
     image: postgis/postgis
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - .psqlrc:/root/.psqlrc:ro
+      - db:/var/lib/postgresql/data
+      - ./log:/root/log:cached
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      PSQL_HISTFILE: /root/log/.psql_history
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - 5432
+    healthcheck: 
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
-    build: .
+    <<: *backend
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/app
     ports:
       - "3000:3000"
-    depends_on:
-      - db
-    environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  runner:
+    <<: *backend
+    command: /bin/bash
+    ports:
+      - "3000:3000"
+
+volumes:
+  db:
+  bundle:
+  rails_cache:

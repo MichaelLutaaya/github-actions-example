@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/core_extensions/kernel/system_bang"
+
+Kernel.include CoreExtensions::Kernel::SystemBang
+
+def docker_running?
+  `docker info > /dev/null 2>&1`
+  $?.success?
+end
+
+unless docker_running?
+  system! "open -a /Applications/Docker.app -g"
+  puts "⏳ Opening Docker for Mac…"
+  sleep 1 until docker_running?
+end
+
+puts "✅ Docker for Mac is running."

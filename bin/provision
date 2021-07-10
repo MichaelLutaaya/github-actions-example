@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/core_extensions/kernel/system_bang"
+
+Kernel.include CoreExtensions::Kernel::SystemBang
+
+system! "docker-compose down --volumes"
+system! "docker-compose up -d db"
+system! "docker-compose run --rm web bin/setup"
