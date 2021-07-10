@@ -2,17 +2,17 @@
 ## Base Image
 ################################################################################
 
-ARG RUBY_VERSION
-ARG DEBIAN_RELEASE
+ARG RUBY_VERSION=3.0.1
+ARG DEBIAN_RELEASE=buster
 FROM ruby:$RUBY_VERSION-slim-$DEBIAN_RELEASE AS base
 
-ARG BUNDLER_VERSION
-ARG PG_MAJOR
+ARG BUNDLER_VERSION=2.2.21
+ARG PG_MAJOR=13
 
 # According to the Docker docs, arguments declared before `FROM` are outside of the build stage and can’t be used in
 # instructions after the `FROM`. A workaround is to re-declare the argument.
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG DEBIAN_RELEASE
+ARG DEBIAN_RELEASE=buster
 
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \

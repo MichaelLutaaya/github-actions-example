@@ -5,11 +5,6 @@ x-app: &app
     context: .
     dockerfile: .dockerdev/Dockerfile
     target: base
-    args:
-      BUNDLER_VERSION: "2.2.21"
-      DEBIAN_RELEASE: "buster"
-      PG_MAJOR: "13"
-      RUBY_VERSION: "3.0.1"
   environment: &env
     RAILS_ENV: ${RAILS_ENV:-development}
   image: github-actions-example:1.0.0
