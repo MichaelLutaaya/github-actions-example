@@ -14,6 +14,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - run: echo "The event name is ${{ github.event_name }}"
       - name: Generate tags
         id: generate_tags
         run: |
